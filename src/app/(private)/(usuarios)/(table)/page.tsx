@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { config } from "../config";
 import { prisma } from "@/lib/prisma";
 import { Table } from "./table";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { SheetForm } from "../(form)/sheet-form";
 
 export default async function Page() {
   const users = await prisma.user.findMany();
@@ -14,7 +16,12 @@ export default async function Page() {
           </h1>
           <p className="text-sm">{config.conteudo.tabela.descricao}</p>
         </div>
-        <Button>{config.conteudo.tabela.botaoNovo}</Button>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button>{config.conteudo.tabela.botaoNovo}</Button>
+          </SheetTrigger>
+          <SheetForm />
+        </Sheet>
       </div>
 
       <div>
