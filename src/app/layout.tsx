@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 //import { Inter } from "next/font/google"; usado para importar fonte
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 //const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
