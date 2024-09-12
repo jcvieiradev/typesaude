@@ -39,8 +39,19 @@ export const authOptions: AuthOptions = {
           name: user.name,
           email: user.email,
           image: user.avatarUrl,
+          role: user.role,
         };
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user && "role" in user) token.role = user.role;
+      return token;
+    },
+    session({ session, token }) {
+      session.user.role = token.role as string;
+      return session;
+    },
+  },
 };

@@ -1,4 +1,4 @@
-import { TSelectOption } from "@/lib/types/form";
+import { TSelectOption } from "../../types/form";
 import { Label } from "../ui/label";
 import {
   Select,

@@ -1,5 +1,6 @@
 import { AvatarDropdown } from "@/components/layout/avatar-dropdown";
 import { Sidebar } from "@/components/layout/sidebar";
+import { authOptions } from "@/config/authOptions";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -9,7 +10,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/login");
@@ -23,8 +24,8 @@ export default async function Layout({
         <AvatarDropdown session={session} />
       </div>
       <div className="flex flex-row h-screen pt-16 items-start">
-        <Sidebar />
-        <main className="w-full max-w-[calc(100vw-200px)]"> {children}</main>
+        <Sidebar session={session} />
+        <main className="w-full max-w-[calc(100vw-200px)]">{children}</main>
       </div>
     </div>
   );

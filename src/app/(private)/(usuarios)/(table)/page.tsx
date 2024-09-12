@@ -25,9 +25,7 @@ export default async function Page() {
       </div>
 
       <div>
-        <div>
-          <Table data={users}></Table>
-        </div>
+        <Table data={users}></Table>
       </div>
     </div>
   );
