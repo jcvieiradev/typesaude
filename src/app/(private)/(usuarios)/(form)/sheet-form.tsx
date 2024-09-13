@@ -15,7 +15,7 @@ interface SheetFormProps {}
 
 export function SheetForm({}: SheetFormProps) {
   return (
-    <SheetContent className="min-w-[500px]">
+    <SheetContent className="w-full md:min-w-[500px]">
       <SheetHeader>
         <SheetTitle>{config.conteudo.formulario.descricao}</SheetTitle>
         <SheetDescription>

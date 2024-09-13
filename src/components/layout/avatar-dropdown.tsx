@@ -19,8 +19,7 @@ export function AvatarDropdown({ session }: AvatarDropdownProps) {
   const avatarFallback =
     session.user?.name?.substring(0, 2).toUpperCase() || "U";
 
-  return (
-    <DropdownMenu>
+  return <DropdownMenu>
       <DropdownMenuTrigger className="focus: outline-none">
         <Avatar>
           <AvatarImage src={session.user?.image || undefined} />
@@ -31,5 +30,5 @@ export function AvatarDropdown({ session }: AvatarDropdownProps) {
         <DropdownMenuItem onClick={() => signOut()}>Sair</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  
 }

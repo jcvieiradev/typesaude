@@ -1,4 +1,6 @@
 import { AvatarDropdown } from "@/components/layout/avatar-dropdown";
+import { Logo } from "@/components/layout/logo";
+import { MobileSidebar } from "@/components/layout/mobile-sidebar";
 import { Sidebar } from "@/components/layout/sidebar";
 import { authOptions } from "@/config/authOptions";
 import { getServerSession } from "next-auth";
@@ -15,18 +17,23 @@ export default async function Layout({
   if (!session) {
     redirect("/login");
   }
-  return (
-    <div className=" fixed flex-col w-full">
+  return <div className=" fixed flex-col w-full">
       <div className="fixed h-16 w-full border-b flex items-center justify-between px-10 bg-white">
-        <div className="w-10">
-          <Image src="/images/logo.png" width={500} height={500} alt="logo" />
+        <div className="flex md:hidden">
+          <MobileSidebar session={session} />
+        </div>
+        <div className="hidden md:block w-10">
+          <Logo/>
         </div>
         <AvatarDropdown session={session} />
       </div>
       <div className="flex flex-row h-screen pt-16 items-start">
-        <Sidebar session={session} />
-        <main className="w-full max-w-[calc(100vw-200px)]">{children}</main>
+        <div className="hidden md:block h-full">
+          <Sidebar session={session} />
+        </div>
+        <main className="w-full max-w-full md:max-w-[calc(100vw-200px)]">
+          {children}
+        </main>
       </div>
     </div>
-  );
 }
