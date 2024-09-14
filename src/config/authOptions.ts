@@ -21,6 +21,11 @@ export const authOptions: AuthOptions = {
           where: {
             email: credentials.email,
           },
+          include:{
+            avatar: {
+              select: {url: true}
+            }
+          }
         });
 
         if (!user) return null;
@@ -38,7 +43,7 @@ export const authOptions: AuthOptions = {
           id: user.id.toString(),
           name: user.name,
           email: user.email,
-          image: user.avatarUrl,
+          image: user.avatar?.url,
           role: user.role,
         };
       },

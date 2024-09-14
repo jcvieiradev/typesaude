@@ -1,0 +1,507 @@
+@startuml erd
+skinparam linetype ortho
+entity "User" as User {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  * email : [UK] String
+  * password : String
+  * role : String
+}
+
+entity "Doctor" as Doctor {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : [UK] String
+  crm : [UK] String
+  phone : String
+  email : String
+}
+
+entity "Service" as Service {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  description : String
+  price : Float
+  * duration : Int
+}
+
+entity "Patient" as Patient {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : String
+  birth : DateTime
+  phone : String
+  email : String
+  address : String
+}
+
+entity "Appointment" as Appointment {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * dateTime : DateTime
+  * status : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+}
+
+entity "Consultation" as Consultation {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * initialDateTime : DateTime
+  finalDateTime : DateTime
+  description : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+  # appointmentId : [UK] [FK] Appointment
+}
+
+entity "Document" as Document {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * url : String
+  * type : String
+  # userId : [UK] [FK] User
+  # consultationId : [FK] Consultation
+}
+
+' Relations
+Appointment }o--|| Doctor: doctorId
+Appointment }o--|| Patient: patientId
+Appointment }o--|| Service: serviceId
+Consultation }o--|| Doctor: doctorId
+Consultation }o--|| Patient: patientId
+Consultation }o--|| Service: serviceId
+Consultation |o--o| Appointment: appointmentId
+Document |o--o| User: userId
+Document }o--o| Consultation: consultationId
+' ManyToMany Relations
+Doctor }o--o{ Service
+' enum relations
+@enduml
+@startuml User
+skinparam linetype ortho
+entity "User" as User {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  * email : [UK] String
+  * password : String
+  * role : String
+}
+
+entity "Document" as Document {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * url : String
+  * type : String
+  # userId : [UK] [FK] User
+  # consultationId : [FK] Consultation
+}
+
+' Relations
+Document |o--o| User: userId
+' ManyToMany Relations
+' enum relations
+@enduml
+@startuml Doctor
+skinparam linetype ortho
+entity "Doctor" as Doctor {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : [UK] String
+  crm : [UK] String
+  phone : String
+  email : String
+}
+
+entity "Service" as Service {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  description : String
+  price : Float
+  * duration : Int
+}
+
+entity "Appointment" as Appointment {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * dateTime : DateTime
+  * status : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+}
+
+entity "Consultation" as Consultation {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * initialDateTime : DateTime
+  finalDateTime : DateTime
+  description : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+  # appointmentId : [UK] [FK] Appointment
+}
+
+' Relations
+Appointment }o--|| Doctor: doctorId
+Appointment }o--|| Service: serviceId
+Consultation }o--|| Doctor: doctorId
+Consultation }o--|| Service: serviceId
+Consultation |o--o| Appointment: appointmentId
+' ManyToMany Relations
+Doctor }o--o{ Service
+' enum relations
+@enduml
+@startuml Service
+skinparam linetype ortho
+entity "Doctor" as Doctor {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : [UK] String
+  crm : [UK] String
+  phone : String
+  email : String
+}
+
+entity "Service" as Service {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  description : String
+  price : Float
+  * duration : Int
+}
+
+entity "Appointment" as Appointment {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * dateTime : DateTime
+  * status : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+}
+
+entity "Consultation" as Consultation {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * initialDateTime : DateTime
+  finalDateTime : DateTime
+  description : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+  # appointmentId : [UK] [FK] Appointment
+}
+
+' Relations
+Appointment }o--|| Doctor: doctorId
+Appointment }o--|| Service: serviceId
+Consultation }o--|| Doctor: doctorId
+Consultation }o--|| Service: serviceId
+Consultation |o--o| Appointment: appointmentId
+' ManyToMany Relations
+Doctor }o--o{ Service
+' enum relations
+@enduml
+@startuml Patient
+skinparam linetype ortho
+entity "Patient" as Patient {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : String
+  birth : DateTime
+  phone : String
+  email : String
+  address : String
+}
+
+entity "Appointment" as Appointment {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * dateTime : DateTime
+  * status : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+}
+
+entity "Consultation" as Consultation {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * initialDateTime : DateTime
+  finalDateTime : DateTime
+  description : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+  # appointmentId : [UK] [FK] Appointment
+}
+
+' Relations
+Appointment }o--|| Patient: patientId
+Consultation }o--|| Patient: patientId
+Consultation |o--o| Appointment: appointmentId
+' ManyToMany Relations
+' enum relations
+@enduml
+@startuml Appointment
+skinparam linetype ortho
+entity "Doctor" as Doctor {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : [UK] String
+  crm : [UK] String
+  phone : String
+  email : String
+}
+
+entity "Service" as Service {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  description : String
+  price : Float
+  * duration : Int
+}
+
+entity "Patient" as Patient {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : String
+  birth : DateTime
+  phone : String
+  email : String
+  address : String
+}
+
+entity "Appointment" as Appointment {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * dateTime : DateTime
+  * status : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+}
+
+entity "Consultation" as Consultation {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * initialDateTime : DateTime
+  finalDateTime : DateTime
+  description : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+  # appointmentId : [UK] [FK] Appointment
+}
+
+' Relations
+Appointment }o--|| Doctor: doctorId
+Appointment }o--|| Patient: patientId
+Appointment }o--|| Service: serviceId
+Consultation }o--|| Doctor: doctorId
+Consultation }o--|| Patient: patientId
+Consultation }o--|| Service: serviceId
+Consultation |o--o| Appointment: appointmentId
+' ManyToMany Relations
+Doctor }o--o{ Service
+' enum relations
+@enduml
+@startuml Consultation
+skinparam linetype ortho
+entity "Doctor" as Doctor {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : [UK] String
+  crm : [UK] String
+  phone : String
+  email : String
+}
+
+entity "Service" as Service {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  description : String
+  price : Float
+  * duration : Int
+}
+
+entity "Patient" as Patient {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  cpf : String
+  birth : DateTime
+  phone : String
+  email : String
+  address : String
+}
+
+entity "Appointment" as Appointment {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * dateTime : DateTime
+  * status : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+}
+
+entity "Consultation" as Consultation {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * initialDateTime : DateTime
+  finalDateTime : DateTime
+  description : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+  # appointmentId : [UK] [FK] Appointment
+}
+
+entity "Document" as Document {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * url : String
+  * type : String
+  # userId : [UK] [FK] User
+  # consultationId : [FK] Consultation
+}
+
+' Relations
+Appointment }o--|| Doctor: doctorId
+Appointment }o--|| Patient: patientId
+Appointment }o--|| Service: serviceId
+Consultation }o--|| Doctor: doctorId
+Consultation }o--|| Patient: patientId
+Consultation }o--|| Service: serviceId
+Consultation |o--o| Appointment: appointmentId
+Document }o--o| Consultation: consultationId
+' ManyToMany Relations
+Doctor }o--o{ Service
+' enum relations
+@enduml
+@startuml Document
+skinparam linetype ortho
+entity "User" as User {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  name : String
+  * email : [UK] String
+  * password : String
+  * role : String
+}
+
+entity "Consultation" as Consultation {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * initialDateTime : DateTime
+  finalDateTime : DateTime
+  description : String
+  # doctorId : [FK] Doctor
+  # patientId : [FK] Patient
+  # serviceId : [FK] Service
+  # appointmentId : [UK] [FK] Appointment
+}
+
+entity "Document" as Document {
++ id [PK] : Int 
+--
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  * url : String
+  * type : String
+  # userId : [UK] [FK] User
+  # consultationId : [FK] Consultation
+}
+
+' Relations
+Document |o--o| User: userId
+Document }o--o| Consultation: consultationId
+' ManyToMany Relations
+' enum relations
+@enduml
