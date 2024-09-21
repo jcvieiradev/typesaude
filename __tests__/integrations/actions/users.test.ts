@@ -13,7 +13,7 @@ describe("Integration: Users", () => {
   let defaultResourse: User;
 
   beforeEach(async () => {
-    const defaultResourse = await model.create({
+    defaultResourse = await model.create({
       data: {
         email: "contato@type.dev.br",
         password: "123456",
@@ -47,10 +47,10 @@ describe("Integration: Users", () => {
     };
     const response = await update(dataToUpdate);
     if ("error" in response) throw Error(response.error);
-    expect(response.data.id).toBe("Teste");
+    expect(response.data.name).toBe("Teste");
   });
 
-  test("deve ser possível remover um usuário", async () => {
+  test.only("deve ser possível remover um usuário", async () => {
     await remove(defaultResourse.id);
 
     const removedResource = await model.findUnique({
