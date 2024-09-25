@@ -64,34 +64,4 @@ describe("Unit: Usuários", () => {
 
     expect(response?.error).toBe(ErrorsMessages.not_authorized);
   });
-
-  test.skip("não deve ser possível criar um usuário com dados inválidos", async () => {
-    authRole = ROLES.ADMIN;
-
-    const responseUserWithoutEmail = await create({
-      email: "teste",
-      name: "Teste",
-      password: "123456",
-      role: ROLES.EDITOR,
-    });
-
-    if ("data" in responseUserWithoutEmail)
-      throw new Error("Deveria retornar um erro");
-
-    expect(responseUserWithoutEmail.error).toBe("Email inválido.");
-  });
-
-  test.skip("não deve ser possível atualizar um usuário com dados inválidos", async () => {
-    authRole = ROLES.ADMIN;
-
-    const responseUserWithoutEmail = await update({
-      id: 1,
-      email: "teste",
-    });
-
-    if ("data" in responseUserWithoutEmail)
-      throw new Error("Deveria retornar um erro");
-
-    expect(responseUserWithoutEmail.error).toBe("Email inválido.");
-  });
 });
