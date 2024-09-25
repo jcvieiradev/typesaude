@@ -6,4 +6,4 @@ export type UpdateUser = Partial<Omit<Model, CommonModelProperties>> & {
   id: Model["id"];
 };
 
-export type ListReturn = { data: Omit<Model, "passaword">[] };
+export type ListReturn = { data: Omit<Model, "password">[] };
