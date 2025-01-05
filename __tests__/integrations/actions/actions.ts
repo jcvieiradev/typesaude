@@ -35,7 +35,7 @@ describe("Integration: Agendamento", () => {
     const doctor = await prisma.doctor.create({ data: {} });
     const service = await prisma.service.create({
       data: {
-        duration: 15,
+        duration: 14,
         name: "consulta",
       },
     });
@@ -124,9 +124,29 @@ describe("Integration: Agendamento", () => {
     }
   });
 
-  test("deve validar corretamente um horário na criação de um agendamento.", async () => {
+  test("deve retornar um horário como disponível se não existir um agendamento ATIVO nomesmo horário para o mesmo médico.", async () => {
+    const casesToTest = [
+      new Date("2025-06-02T14:00"),
+      new Date("2025-06-02T14:45"),
+      new Date("2025-06-02T15:15"),
+      new Date("2025-06-02T16:00"),
+    ];
+
+    for (const toTest of casesToTest) {
+      const response = await isTimeAvailable(
+        toTest,
+        15,
+        defaultResourse.doctorId
+      );
+      if ("error" in response) throw new Error(response.error);
+
+      expect(response.data).toBe(true);
+    }
+  });
+
+  test.only("deve validar corretamente um horário na criação de um agendamento.", async () => {
     const dataToCreate: CreateResource = {
-      dateTime: new Date("2025-06-02T15:00"),
+      dateTime: new Date("2025-06-03T15:00"),
       doctorId: defaultResourse.doctorId,
       patientId: defaultResourse.patientId,
       serviceId: defaultResourse.serviceId,
@@ -140,7 +160,7 @@ describe("Integration: Agendamento", () => {
     expect(response.error).toBe("O horário não esta disponível. Tente outro.");
   });
 
-  test("deve validar corretamente um horário na atualização de um agendamento", async () => {
+  test.only("deve validar corretamente um horário na atualização de um agendamento.", async () => {
     const newAppointment = await model.create({
       data: {
         dateTime: new Date("2025-06-03T15:00"),

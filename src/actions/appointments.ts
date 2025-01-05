@@ -26,6 +26,35 @@ export async function create(
     if (session?.user.role !== ROLES.VIEWER) {
       return { error: ErrorsMessages.not_authorized };
     }
+
+    const service = await prisma.service.findUnique({
+      where: {
+        id: data.serviceId,
+      },
+      select: {
+        duration: true,
+      },
+    });
+
+    if (!service) {
+      return { error: "Serviço não foi encontrado" };
+    }
+
+    const isTimeAvailableResponse = await isTimeAvailable(
+      data.dateTime,
+      service?.duration,
+      data.doctorId
+    );
+
+    if ("error" in isTimeAvailableResponse)
+      return {
+        error:
+          "Erro ao verificar disponibilidade do horário. Entre em contato com o nosso time.",
+      };
+
+    if (!isTimeAvailableResponse.data)
+      return { error: "O horário não esta disponível. Tente outro." };
+
     const response = await model.create({ data });
     return { data: response };
   } catch (error) {
@@ -64,10 +93,51 @@ export async function update(
     }
 
     const { id, ...dataToUpdate } = data;
-    const response = await model.update({
-      where: { id },
-      data: dataToUpdate,
-    });
+
+    if (dataToUpdate.dateTime) {
+      const appointment = await model.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          doctorId: true,
+          serviceId: true,
+        },
+      });
+
+      if (!appointment) {
+        return { error: "Agendamento não foi encontrado" };
+      }
+
+      const service = await prisma.service.findUnique({
+        where: {
+          id: dataToUpdate.serviceId ?? appointment.serviceId,
+        },
+        select: {
+          duration: true,
+        },
+      });
+
+      if (!service) {
+        return { error: "Serviço não foi encontrado" };
+      }
+
+      const isTimeAvailableResponse = await isTimeAvailable(
+        dataToUpdate.dateTime,
+        service.duration,
+        appointment.doctorId
+      );
+
+      if ("error" in isTimeAvailableResponse)
+        return {
+          error:
+            "Erro ao verficiar disponibilidade do horário. Entre em contato com nosso time.",
+        };
+      if (!isTimeAvailableResponse.data)
+        return { error: "O horário não esta disponível. Tente outro." };
+    }
+
+    const response = await model.update({ where: { id }, data: dataToUpdate });
     return { data: response };
   } catch (error) {
     console.error(error);
